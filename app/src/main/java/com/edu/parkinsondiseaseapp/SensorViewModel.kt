@@ -1,11 +1,10 @@
 package com.edu.parkinsondiseaseapp
 
-import android.content.Context
-import android.hardware.Sensor
 import android.hardware.SensorManager
-import android.util.Log.d
 import androidx.lifecycle.ViewModel
 import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineDataSet
+import kotlin.collections.ArrayList
 
 class SensorViewModel : ViewModel() {
     private lateinit var sensorManager: SensorManager
@@ -20,7 +19,32 @@ class SensorViewModel : ViewModel() {
         d("BomohDeviceSensorAccelerometer", "$aSensor")
     } */
 
-    var lineList: ArrayList<Entry> = ArrayList()
-    var lineList2: ArrayList<Entry> = ArrayList()
+    var axisX: ArrayList<Entry> = ArrayList()
+    var axisY: ArrayList<Entry> = ArrayList()
+    var axisZ: ArrayList<Entry> = ArrayList()
+    var xDataCollection: ArrayList<LineDataSet> = ArrayList()
+    var yDataCollection: ArrayList<LineDataSet> = ArrayList()
+    var zDataCollection: ArrayList<LineDataSet> = ArrayList()
+    var xyzDataCollection: ArrayList<LineDataSet> = ArrayList()
 
+    val gyroLabel: String = "gyro"
+    val xLabel: String = "X"
+    val yLabel: String = "Y"
+    val zLabel: String = "Z"
+
+    var currentTime : Long = 0
+    var lastCheck : Long = 0
+
+    fun gyro(x: Float, y: Float, z: Float, time: Int) {
+        axisX.add(Entry(time.toFloat(),x))
+        axisY.add(Entry(time.toFloat(),y))
+        axisZ.add(Entry(time.toFloat(),z))
+    }
+
+    fun clear() {
+        axisX.clear()
+        axisY.clear()
+        axisZ.clear()
+        xDataCollection.clear()
+    }
 }

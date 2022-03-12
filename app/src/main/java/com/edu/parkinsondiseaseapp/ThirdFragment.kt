@@ -9,13 +9,12 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.Half
 import android.util.Log
-import android.util.Log.d
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.edu.parkinsondiseaseapp.databinding.FragmentSecondBinding
+import com.edu.parkinsondiseaseapp.databinding.FragmentThirdBinding
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -26,58 +25,47 @@ import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 
+class ThirdFragment : Fragment(), SensorEventListener {
 
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
-class SecondFragment : Fragment(), SensorEventListener {
-
-    private var _binding: FragmentSecondBinding? = null
+    private var _binding: FragmentThirdBinding? = null
     private lateinit var sensorManager: SensorManager
     private lateinit var sensor: Sensor
-    private lateinit var viewModel : SensorViewModel
-    // Create a constant to convert nanoseconds to seconds.
+
     private val NS2S = 1.0f / 1000000000.0f
     private val deltaRotationVector = FloatArray(4) { 0f }
     private var timestamp: Float = 0f
+
     private lateinit var gyroXdataSet: LineDataSet
     private lateinit var gyroYdataSet: LineDataSet
     private lateinit var gyroZdataSet: LineDataSet
-    private lateinit var gyroXaxisData: LineData
-    private lateinit var gyroYaxisData: LineData
-    private lateinit var gyroZaxisData: LineData
+    private lateinit var gyroXYZaxisData: LineData
+
     lateinit var sensorViewModel: SensorViewModel
     private var count = 0
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        _binding = FragmentSecondBinding.inflate(inflater, container, false)
+        // Inflate the layout for this fragment
+        _binding = FragmentThirdBinding.inflate(inflater, container, false)
         sensorViewModel = ViewModelProvider(this).get(SensorViewModel::class.java)
 
-        gyroXdataSet = LineDataSet(sensorViewModel.axisX, sensorViewModel.gyroLabel)
-        gyroYdataSet = LineDataSet(sensorViewModel.axisY, sensorViewModel.gyroLabel)
-        gyroZdataSet = LineDataSet(sensorViewModel.axisZ, sensorViewModel.gyroLabel)
+        gyroXdataSet = LineDataSet(sensorViewModel.axisX, sensorViewModel.xLabel)
+        gyroYdataSet = LineDataSet(sensorViewModel.axisY, sensorViewModel.yLabel)
+        gyroZdataSet = LineDataSet(sensorViewModel.axisZ, sensorViewModel.zLabel)
 
-        sensorViewModel.xDataCollection.add(gyroXdataSet)
-        sensorViewModel.yDataCollection.add(gyroYdataSet)
-        sensorViewModel.zDataCollection.add(gyroZdataSet)
+        sensorViewModel.xyzDataCollection.add(gyroXdataSet)
+        sensorViewModel.xyzDataCollection.add(gyroYdataSet)
+        sensorViewModel.xyzDataCollection.add(gyroZdataSet)
 
-        gyroXaxisData = LineData(sensorViewModel.xDataCollection as List<ILineDataSet>?)
-        gyroYaxisData = LineData(sensorViewModel.yDataCollection as List<ILineDataSet>?)
-        gyroZaxisData = LineData(sensorViewModel.zDataCollection as List<ILineDataSet>?)
-
+        gyroXYZaxisData = LineData(sensorViewModel.xyzDataCollection as List<ILineDataSet>?)
         Collections.sort(sensorViewModel.axisX, EntryXComparator())
         Collections.sort(sensorViewModel.axisY, EntryXComparator())
         Collections.sort(sensorViewModel.axisZ, EntryXComparator())
 
-//        gyroDataSet.lineWidth = 3f
         gyroXdataSet.axisDependency = YAxis.AxisDependency.LEFT
         gyroYdataSet.axisDependency = YAxis.AxisDependency.LEFT
         gyroZdataSet.axisDependency = YAxis.AxisDependency.LEFT
@@ -86,34 +74,21 @@ class SecondFragment : Fragment(), SensorEventListener {
         gyroYdataSet.setDrawValues(false)
         gyroZdataSet.setDrawValues(false)
 
-        binding.XChart.data = gyroXaxisData
-        binding.YChart.data = gyroYaxisData
-        binding.ZChart.data = gyroZaxisData
+        binding.LineChart.data = gyroXYZaxisData
+        binding.LineChart.setScaleEnabled(true)
+        binding.LineChart.isDragEnabled = true
 
-        binding.XChart.setScaleEnabled(true)
-        binding.YChart.setScaleEnabled(true)
-        binding.ZChart.setScaleEnabled(true)
-
-        binding.XChart.isDragEnabled = true
-        binding.YChart.isDragEnabled = true
-        binding.ZChart.isDragEnabled = true
-
-        gyroXdataSet.color = Color.BLACK
-        gyroYdataSet.color = Color.BLACK
-        gyroZdataSet.color = Color.BLACK
-//        lineDataSet.setColors(*ColorTemplate.JOYFUL_COLORS)
-        gyroXdataSet.valueTextColor= Color.BLUE
-        gyroYdataSet.valueTextColor= Color.BLUE
-        gyroZdataSet.valueTextColor= Color.BLUE
+        gyroXdataSet.color = Color.RED
+        gyroYdataSet.color = Color.GREEN
+        gyroZdataSet.color = Color.BLUE
 
         gyroXdataSet.valueTextSize = 13f
         gyroYdataSet.valueTextSize = 13f
         gyroZdataSet.valueTextSize = 13f
 
-        gyroXdataSet.setDrawFilled(true)
-        gyroYdataSet.setDrawFilled(true)
-        gyroZdataSet.setDrawFilled(true)
-
+//        gyroXdataSet.setDrawFilled(true)
+//        gyroYdataSet.setDrawFilled(true)
+//        gyroZdataSet.setDrawFilled(true)
         return binding.root
     }
 
@@ -121,7 +96,7 @@ class SecondFragment : Fragment(), SensorEventListener {
         super.onViewCreated(view, savedInstanceState)
         sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
         var a = false
-        binding.buttonSecond.setOnClickListener {
+        binding.thirdButton.setOnClickListener {
 //            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
             if (!a) {
                 sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
@@ -149,7 +124,10 @@ class SecondFragment : Fragment(), SensorEventListener {
             sensorViewModel.currentTime = System.currentTimeMillis()
             when {
                 (sensorViewModel.currentTime - sensorViewModel.lastCheck) >= 1000 -> {
-                    d("bomoh", "tme: ${sensorViewModel.currentTime - sensorViewModel.lastCheck} :: cT: ${sensorViewModel.currentTime} :: lC: ${sensorViewModel.lastCheck}")
+                    Log.d(
+                        "bomoh",
+                        "tme: ${sensorViewModel.currentTime - sensorViewModel.lastCheck} :: cT: ${sensorViewModel.currentTime} :: lC: ${sensorViewModel.lastCheck}"
+                    )
                     sensorViewModel.gyro(axisX,axisY,axisZ, count)
                     updateGraph()
                     count+=1
@@ -189,45 +167,27 @@ class SecondFragment : Fragment(), SensorEventListener {
         // in order to get the updated rotation.
         // rotationCurrent = rotationCurrent * deltaRotationMatrix;
     }
-
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
 
     }
 
     private fun updateGraph() {
-
         gyroXdataSet.notifyDataSetChanged()
-        gyroXaxisData.notifyDataChanged()
         gyroYdataSet.notifyDataSetChanged()
-        gyroYaxisData.notifyDataChanged()
         gyroZdataSet.notifyDataSetChanged()
-        gyroZaxisData.notifyDataChanged()
-//        Collections.sort(sensorViewModel.gyroX, EntryXComparator())
-//        Collections.sort(sensorViewModel.gyroY, EntryXComparator())
-//        Collections.sort(sensorViewModel.gyroZ, EntryXComparator())
+        gyroXYZaxisData.notifyDataChanged()
 
-        binding.XChart.notifyDataSetChanged()
-        binding.XChart.data.notifyDataChanged()
-        binding.YChart.notifyDataSetChanged()
-        binding.YChart.data.notifyDataChanged()
-        binding.ZChart.notifyDataSetChanged()
-        binding.ZChart.data.notifyDataChanged()
+        binding.LineChart.notifyDataSetChanged()
+        binding.LineChart.data.notifyDataChanged()
 
-        binding.XChart.invalidate()
-        binding.YChart.invalidate()
-        binding.ZChart.invalidate()
+        binding.LineChart.invalidate()
 
-        val dataX = binding.XChart.data
-        val dataY = binding.YChart.data
-        val dataZ = binding.ZChart.data
+        val data = binding.LineChart.data
 
         // Move to the graph to the latest data
-        binding.XChart.setVisibleXRangeMaximum(10F)
-        binding.XChart.moveViewToX(dataX.entryCount.toFloat())
-        binding.YChart.setVisibleXRangeMaximum(10F)
-        binding.YChart.moveViewToX(dataY.entryCount.toFloat())
-        binding.ZChart.setVisibleXRangeMaximum(10F)
-        binding.ZChart.moveViewToX(dataZ.entryCount.toFloat())
+        binding.LineChart.setVisibleXRangeMaximum(10F)
+        binding.LineChart.moveViewToX(data.entryCount.toFloat())
+        binding.LineChart.setVisibleXRangeMaximum(10F)
     }
 
     override fun onDestroyView() {

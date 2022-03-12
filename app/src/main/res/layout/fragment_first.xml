@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:foregroundTint="@color/teal_200"
     tools:context=".FirstFragment">
 
     <TextView
@@ -16,14 +17,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/LineChart"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/button_first"
         android:layout_width="wrap_content"
@@ -32,4 +25,96 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/textview_first"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnSelectGyro"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/border_background"
+            android:backgroundTint="@color/teal_200"
+            android:padding="30dp"
+            android:scaleType="fitEnd"
+            android:src="@drawable/gyro_logo"
+            android:tint="#FFFFFF"
+            app:layout_constraintEnd_toStartOf="@+id/btnSelectAccelerometer"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/btnSelectAccelerometer"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            android:background="@drawable/border_background"
+            android:backgroundTint="@android:color/holo_blue_light"
+            android:padding="20dp"
+            android:scaleType="fitEnd"
+            android:src="@drawable/accelerometer_logo"
+            android:tint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btnSelectGyro"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/imageButton6"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/border_background"
+            android:backgroundTint="@android:color/holo_orange_light"
+            android:padding="20dp"
+            android:scaleType="fitEnd"
+            android:src="@drawable/voice_logo"
+            android:tint="@color/white"
+            app:layout_constraintEnd_toEndOf="@+id/btnSelectGyro"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnSelectGyro" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Gyroscope"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="@+id/btnSelectGyro"
+            app:layout_constraintStart_toStartOf="@+id/btnSelectGyro"
+            app:layout_constraintTop_toTopOf="@+id/btnSelectGyro" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Accelerometer"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="@+id/btnSelectAccelerometer"
+            app:layout_constraintStart_toStartOf="@+id/btnSelectAccelerometer"
+            app:layout_constraintTop_toTopOf="@+id/btnSelectAccelerometer" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Voice"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="@+id/imageButton6"
+            app:layout_constraintStart_toStartOf="@+id/imageButton6"
+            app:layout_constraintTop_toTopOf="@+id/imageButton6" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
