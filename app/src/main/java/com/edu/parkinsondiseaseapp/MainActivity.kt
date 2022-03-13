@@ -1,5 +1,6 @@
 package com.edu.parkinsondiseaseapp
 
+import android.content.pm.PackageManager
 import android.hardware.SensorManager
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
@@ -10,12 +11,16 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.app.ActivityCompat
+import androidx.lifecycle.ViewModelProvider
 import com.edu.parkinsondiseaseapp.databinding.ActivityMainBinding
+import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel : MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,11 +33,28 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         binding.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+
+        //check permission/request permission
+        viewModel.permissionGranted = ActivityCompat.checkSelfPermission(this, viewModel.permission[0]) == PackageManager.PERMISSION_GRANTED
+        if (!viewModel.permissionGranted)
+            ActivityCompat.requestPermissions(this, viewModel.permission, viewModel.REQUEST_CODE)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == viewModel.REQUEST_CODE)
+            viewModel.permissionGranted = grantResults[0] == PackageManager.PERMISSION_GRANTED
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -47,4 +47,8 @@ class SensorViewModel : ViewModel() {
         axisZ.clear()
         xDataCollection.clear()
     }
+
+    fun addAmplitude(x: Float, time: Float) {
+        axisX.add(Entry(time, x))
+    }
 }

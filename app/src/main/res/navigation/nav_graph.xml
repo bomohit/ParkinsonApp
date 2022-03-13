@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_FourthFragment"
             app:destination="@id/FourthFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_FifthFragment"
+            app:destination="@id/FifthFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -41,4 +44,9 @@
         android:name="com.edu.parkinsondiseaseapp.FourthFragment"
         android:label="@string/fourth_fragment_label"
         tools:layout="@layout/fragment_fourth" />
+    <fragment
+        android:id="@+id/FifthFragment"
+        android:name="com.edu.parkinsondiseaseapp.FifthFragment"
+        android:label="@string/fifth_fragment_label"
+        tools:layout="@layout/fragment_fifth" />
 </navigation>
