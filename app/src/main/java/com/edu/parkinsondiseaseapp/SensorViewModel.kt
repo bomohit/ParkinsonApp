@@ -9,19 +9,10 @@ import kotlin.collections.ArrayList
 class SensorViewModel : ViewModel() {
     private lateinit var sensorManager: SensorManager
 
-    /*
-    fun senss(context: Context) {
-        sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-
-        val deviceSensor: List<Sensor> = sensorManager.getSensorList(Sensor.TYPE_ALL)
-        val aSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-        d("BomohDeviceSensor", "$deviceSensor")
-        d("BomohDeviceSensorAccelerometer", "$aSensor")
-    } */
-
     var axisX: ArrayList<Entry> = ArrayList()
     var axisY: ArrayList<Entry> = ArrayList()
     var axisZ: ArrayList<Entry> = ArrayList()
+
     var xDataCollection: ArrayList<LineDataSet> = ArrayList()
     var yDataCollection: ArrayList<LineDataSet> = ArrayList()
     var zDataCollection: ArrayList<LineDataSet> = ArrayList()
@@ -31,6 +22,7 @@ class SensorViewModel : ViewModel() {
     val xLabel: String = "X"
     val yLabel: String = "Y"
     val zLabel: String = "Z"
+    val amplitudeLabel: String = "Amplitude"
 
     var currentTime : Long = 0
     var lastCheck : Long = 0
@@ -46,9 +38,32 @@ class SensorViewModel : ViewModel() {
         axisY.clear()
         axisZ.clear()
         xDataCollection.clear()
+        yDataCollection.clear()
+        zDataCollection.clear()
+        xyzDataCollection.clear()
     }
 
     fun addAmplitude(x: Float, time: Float) {
         axisX.add(Entry(time, x))
+    }
+
+    fun convertToCSV(): String {
+        var content = "time,X,Y,Z\n"
+        axisX.forEachIndexed { i, _ ->
+            content += "${axisX[i].x},${axisX[i].y},${axisY[i].y},${axisZ[i].y}\n"
+
+        }
+
+        return content
+    }
+
+    fun convertAmplitudeToCSV(): String {
+        var content = "time,amplitude\n"
+        axisX.forEachIndexed { i, _ ->
+            content += "${axisX[i].x},${axisX[i].y}\n"
+
+        }
+
+        return content
     }
 }

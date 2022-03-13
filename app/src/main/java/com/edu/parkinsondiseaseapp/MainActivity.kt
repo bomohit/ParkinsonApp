@@ -3,6 +3,7 @@ package com.edu.parkinsondiseaseapp
 import android.content.pm.PackageManager
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.util.Log.d
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -11,7 +12,9 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageButton
 import androidx.core.app.ActivityCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.edu.parkinsondiseaseapp.databinding.ActivityMainBinding
 import java.util.jar.Manifest
@@ -28,22 +31,21 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
-
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         //check permission/request permission
         viewModel.permissionGranted = ActivityCompat.checkSelfPermission(this, viewModel.permission[0]) == PackageManager.PERMISSION_GRANTED
+        viewModel.permissionExternalDirGranted = ActivityCompat.checkSelfPermission( this, viewModel.permissionDir[0]) == PackageManager.PERMISSION_GRANTED
+
         if (!viewModel.permissionGranted)
             ActivityCompat.requestPermissions(this, viewModel.permission, viewModel.REQUEST_CODE)
+
+        findViewById<ImageButton>(R.id.backButton).setOnClickListener {
+            navController.popBackStack()
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -52,9 +54,11 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (requestCode == viewModel.REQUEST_CODE)
-            viewModel.permissionGranted = grantResults[0] == PackageManager.PERMISSION_GRANTED
+        d("bomoh", "PERMISSION: $grantResults, $requestCode")
+        when (requestCode) {
+            viewModel.REQUEST_CODE -> viewModel.permissionGranted = grantResults[0] == PackageManager.PERMISSION_GRANTED
+            viewModel.REQUEST_CODE_DIR -> viewModel.permissionExternalDirGranted = grantResults[0] == PackageManager.PERMISSION_GRANTED
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -78,4 +82,6 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
+
+
 }

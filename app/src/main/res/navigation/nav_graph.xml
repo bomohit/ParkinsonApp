@@ -16,13 +16,25 @@
             app:destination="@id/SecondFragment" />
         <action
             android:id="@+id/action_FirstFragment_to_ThirdFragment"
-            app:destination="@id/ThirdFragment" />
+            app:destination="@id/ThirdFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/from_right" />
         <action
             android:id="@+id/action_FirstFragment_to_FourthFragment"
-            app:destination="@id/FourthFragment" />
+            app:destination="@id/FourthFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/from_right" />
         <action
             android:id="@+id/action_FirstFragment_to_FifthFragment"
-            app:destination="@id/FifthFragment" />
+            app:destination="@id/FifthFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/from_right" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"

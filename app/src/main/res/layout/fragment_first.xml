@@ -7,30 +7,12 @@
     android:foregroundTint="@color/teal_200"
     tools:context=".FirstFragment">
 
-    <TextView
-        android:id="@+id/textview_first"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_first_fragment"
-        android:textColorLink="#E41616"
-        app:layout_constraintBottom_toTopOf="@id/button_first"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/button_first"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/next"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/textview_first"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -66,7 +48,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/imageButton6"
+            android:id="@+id/btnSelectVoice"
             android:layout_width="0dp"
             android:layout_height="250dp"
             android:layout_marginTop="15dp"
@@ -112,9 +94,9 @@
             android:text="Voice"
             android:textColor="@color/white"
             android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="@+id/imageButton6"
-            app:layout_constraintStart_toStartOf="@+id/imageButton6"
-            app:layout_constraintTop_toTopOf="@+id/imageButton6" />
+            app:layout_constraintEnd_toEndOf="@+id/btnSelectVoice"
+            app:layout_constraintStart_toStartOf="@+id/btnSelectVoice"
+            app:layout_constraintTop_toTopOf="@+id/btnSelectVoice" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
